@@ -1,0 +1,10 @@
+node_id: "node1"
+listen_addr: "0.0.0.0:9001"  # Docker: bind to all interfaces
+raft_addr: "node1:9011"      # Docker: use service name for Raft
+bootstrap: true
+join_url: ""
+auth_token: ""
+peers:
+  - "node2:9002"
+  - "node3:9003"
+

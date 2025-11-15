@@ -1,0 +1,10 @@
+node_id: "node1"
+listen_addr: "127.0.0.1:9001"  # Use 127.0.0.1 for local dev, 0.0.0.0 for Docker
+raft_addr: "127.0.0.1:9011"   # Raft requires specific IP (not 0.0.0.0)
+bootstrap: true
+join_url: ""
+auth_token: ""  # Optional: set token for write operations, or use AUTH_TOKEN env var
+peers:
+  - "127.0.0.1:9002"
+  - "127.0.0.1:9003"
+

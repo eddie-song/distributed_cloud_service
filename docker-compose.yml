@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  node1:
+    build: .
+    image: mini-cloud:latest
+    container_name: mini-node1
+    command: ["/app/node", "-config", "/app/configs/docker-node1.yaml"]
+    ports:
+      - "9001:9001"
+      - "9011:9011"
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./data/node1:/app/data/node1
+      - ./web:/app/web:ro
+
+  node2:
+    image: mini-cloud:latest
+    container_name: mini-node2
+    command: ["/app/node", "-config", "/app/configs/docker-node2.yaml"]
+    depends_on:
+      - node1
+    ports:
+      - "9002:9002"
+      - "9012:9012"
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./data/node2:/app/data/node2
+      - ./web:/app/web:ro
+
+  node3:
+    image: mini-cloud:latest
+    container_name: mini-node3
+    command: ["/app/node", "-config", "/app/configs/docker-node3.yaml"]
+    depends_on:
+      - node1
+    ports:
+      - "9003:9003"
+      - "9013:9013"
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./data/node3:/app/data/node3
+      - ./web:/app/web:ro
+
+# Build context
+# Dockerfile assumed present at repo root
