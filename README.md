@@ -8,11 +8,6 @@ A small, opinionated distributed key–value service with:
 - **Graceful shutdown** and durability via snapshots
 - **CLI tool** and web dashboard
 
-## Documentation
-
-- [Architecture Documentation](docs/ARCHITECTURE.md) - System design and components
-- [API Documentation](docs/API.md) - Complete API reference
-
 ## 1) Prerequisites
 
 - Go 1.22+ (or 1.23+ for Prometheus metrics)
@@ -605,13 +600,7 @@ Notes:
 - `auth_token` can be set in YAML or via `AUTH_TOKEN` environment variable (env takes precedence).
 - **Important**: `raft_addr` must be a specific IP address (e.g., `127.0.0.1` or your network IP), not `0.0.0.0`. Use `0.0.0.0` only for `listen_addr` in Docker.
 
-## 7) What's intentionally simplified (for now)
-- Discovery: joining requires `join_url` (no gossip/serf yet).
-- Read consistency: GET validates node state but doesn't enforce full ReadIndex linearizability (leader reads are always linearizable; for guaranteed linearizability, read from leader).
-- Security: bearer token auth is implemented, but TLS for HTTP/Raft transport is not yet.
-- Ops: structured logging, Prometheus metrics, node removal, and graceful shutdown are implemented.
-
-## 8) Shutting Down All Nodes
+## 7) Shutting Down All Nodes
 
 **Complete shutdown command:**
 ```powershell
@@ -639,13 +628,4 @@ Get-Process | Where-Object {$_.ProcessName -eq "node" -and $_.Path -like "*go-bu
 - Check browser cache - try hard refresh (Ctrl+F5) or open in incognito/private mode
 - Verify ports are actually free: `Get-NetTCPConnection -LocalPort 9001,9002,9003`
 - Check if Docker containers are running: `docker ps` (if using Docker Compose)
-
-## 9) Troubleshooting
-- Port in use `bind: Only one usage...` → another process holds the port:
-  - Find PID: `Get-NetTCPConnection -LocalPort 9001,9011 | Select OwningProcess, LocalAddress, LocalPort`
-  - Kill: `Stop-Process -Id <PID> -Force`
-- Re-bootstrap issues / old state:
-  - Stop nodes, then remove data for a clean start: `Remove-Item -Recurse -Force .\data\node1` (and node2/node3 if needed).
-- Dashboard not loading:
-  - Ensure the node exposes the configured HTTP port; browse to `/dashboard` on the leader.
 
